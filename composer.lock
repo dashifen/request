@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ceed805995ad82af0f36599e147bfe5",
+    "content-hash": "1a85843d2afe63e4c4ebecf7a6f8d3ce",
     "packages": [
         {
             "name": "dashifen/session",
@@ -153,6 +153,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^7.1"
+    },
     "platform-dev": []
 }
