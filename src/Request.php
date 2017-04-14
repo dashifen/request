@@ -1,0 +1,221 @@
+<?php
+
+namespace Dashifen\Request;
+
+use Dashifen\Session\Session;
+use Zend\Diactoros\ServerRequest;
+
+/**
+ * Class Request
+ *
+ * @package Dashifen\Request
+ */
+class Request implements RequestInterface {
+	
+	/**
+	 * @var ServerRequest $request ;
+	 */
+	protected $request;
+	
+	/**
+	 * @var Session $session
+	 */
+	protected $session;
+	
+	/**
+	 * @var array $getVars
+	 */
+	protected $getVars;
+	
+	/**
+	 * @var array $postVars
+	 */
+	protected $postVars;
+	
+	/**
+	 * @var array serverVars
+	 */
+	protected $serverVars;
+	
+	/**
+	 * @var array $cookieVars
+	 */
+	protected $cookieVars;
+	
+	/**
+	 * Request constructor.
+	 *
+	 * @param ServerRequest $request
+	 * @param Session       $session
+	 */
+	public function __construct(ServerRequest $request, Session $session) {
+		$this->request = $request;
+		$this->session = $session;
+	}
+	
+	/**
+ 	 * Returns a $_GET value
+	 *
+	 * @param string $index
+	 *
+	 * @return null|string
+	 */
+	public function getGetVar(string $index): ?string {
+		return $this->pullGet()[$index] ?? null;
+	}
+	
+	/**
+ 	 * Returns $_GET
+	 *
+	 * @return array
+	 */
+	public function getGet(): array {
+		return $this->pullGet();
+	}
+	
+	/**
+	 * Initializes the getVars property when necessary and returns it
+	 *
+	 * @return array
+	 */
+	protected function pullGet(): array {
+		if (!is_array($this->getVars)) {
+			$this->getVars = $this->request->getQueryParams();
+		}
+		
+		return $this->getVars;
+	}
+	
+	/**
+	 * Returns a $_POST value
+	 *
+	 * @param string $index
+	 *
+	 * @return null|string
+	 */
+	public function getPostVar(string $index): ?string {
+		return $this->pullPost()[$index] ?? null;
+	}
+	
+	/**
+	 * Returns $_POST
+	 *
+	 * @return array
+	 */
+	public function getPost(): array {
+		return $this->pullPost();
+	}
+	
+	/**
+	 * Initializes postVars property if necessary and returns it
+	 *
+	 * @return array
+	 */
+	protected function pullPost() {
+		if (!is_array($this->postVars)) {
+			$this->postVars = $this->request->getParsedBody();
+			
+			if (!is_array($this->postVars)) {
+				$this->postVars = [];
+			}
+		}
+		
+		return $this->postVars;
+	}
+	
+	/**
+	 * Returns a $_SERVER value
+	 *
+	 * @param string $index
+	 *
+	 * @return null|string
+	 */
+	public function getServerVar(string $index): ?string {
+		return $this->pullServer()[$index] ?? null;
+	}
+	
+	/**
+	 * Returns $_SERVER
+	 *
+	 * @return array
+	 */
+	public function getServer(): array {
+		return $this->pullServer();
+	}
+	
+	/**
+	 * Initializes serverVars property if necessary and returns it
+	 *
+	 * @return array
+	 */
+	protected function pullServer() {
+		if (!is_array($this->serverVars)) {
+			$this->serverVars = $this->request->getServerParams();
+		}
+		
+		return $this->serverVars;
+	}
+	
+	/**
+	 * Returns a $_COOKIE value
+	 *
+	 * @param string $index
+	 *
+	 * @return null|string
+	 */
+	public function getCookieVar(string $index): ?string {
+		return $this->pullCookies()[$index] ?? null;
+	}
+	
+	/**
+	 * Returns $_COOKIE
+	 *
+	 * @return array
+	 */
+	public function getCookies(): array {
+		return $this->pullCookies();
+	}
+	
+	/**
+	 * Initializes cookieVars property if necessary and returns it
+	 *
+	 * @return array
+	 */
+	protected function pullCookies() {
+		if (!is_array($this->cookieVars)) {
+			$this->cookieVars = $this->request->getCookieParams();
+		}
+		
+		return $this->cookieVars;
+	}
+	
+	/**
+	 * A get* method for our session added for completeness compared with the others.
+	 *
+	 * @param string $index
+	 * @param null   $default
+	 *
+	 * @return mixed|null
+	 */
+	public function getSessionVar(string $index, $default = null) {
+		return $this->session->get($index, $default);
+	}
+	
+	/**
+	 * Returns the protected Session property
+	 *
+	 * @return array
+	 */
+	public function getSession(): array {
+		return $this->session->getSession();
+	}
+	
+	/**
+	 * Returns the actual session object
+	 *
+	 * @return Session
+	 */
+	public function getSessionObj(): Session {
+		return $this->session;
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"name": "dashifen/request",
+	"description": "a basic encapsulation of an http request from a visitor to a website",
+	"authors": [
+		{
+			"name": "David Dashifen Kees",
+			"email": "dashifen@dashifen.com",
+			"homepage": "https://dashifen.com",
+			"role": "developer"
+		}
+	],
+	"minimum-stability": "stable",
+	"autoload": {
+		"psr-4": {
+			"Dashifen\\Request\\": "src/"
+		}
+	},
+	"require": {
+		"zendframework/zend-diactoros": "^1.4",
+		"dashifen/session": "^1.0"
+	},
+	"license": "MIT"
+}
