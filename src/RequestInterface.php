@@ -2,7 +2,7 @@
 
 namespace Dashifen\Request;
 
-use Dashifen\Session\Session;
+use Dashifen\Session\SessionInterface;
 
 /**
  * Interface RequestInterface
@@ -72,7 +72,7 @@ interface RequestInterface {
 	public function getSession(): array;
 	
 	/**
-	 * @return Session
+	 * @return SessionInterface
 	 */
-	public function getSessionObj(): Session;
+	public function getSessionObj(): SessionInterface;
 }

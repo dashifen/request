@@ -2,8 +2,9 @@
 
 namespace Dashifen\Request;
 
-use Dashifen\Session\Session;
-use Zend\Diactoros\ServerRequest;
+use Dashifen\Session\SessionInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 
 /**
  * Class Request
@@ -13,12 +14,12 @@ use Zend\Diactoros\ServerRequest;
 class Request implements RequestInterface {
 	
 	/**
-	 * @var ServerRequest $request ;
+	 * @var ServerRequestInterface $request ;
 	 */
 	protected $request;
 	
 	/**
-	 * @var Session $session
+	 * @var SessionInterface $session
 	 */
 	protected $session;
 	
@@ -45,10 +46,10 @@ class Request implements RequestInterface {
 	/**
 	 * Request constructor.
 	 *
-	 * @param ServerRequest $request
-	 * @param Session       $session
+	 * @param ServerRequestInterface $request
+	 * @param SessionInterface       $session
 	 */
-	public function __construct(ServerRequest $request, Session $session) {
+	public function __construct(ServerRequestInterface $request, SessionInterface $session) {
 		$this->request = $request;
 		$this->session = $session;
 	}
@@ -213,9 +214,9 @@ class Request implements RequestInterface {
 	/**
 	 * Returns the actual session object
 	 *
-	 * @return Session
+	 * @return SessionInterface
 	 */
-	public function getSessionObj(): Session {
+	public function getSessionObj(): SessionInterface {
 		return $this->session;
 	}
 }
