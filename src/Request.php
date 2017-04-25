@@ -58,11 +58,12 @@ class Request implements RequestInterface {
  	 * Returns a $_GET value
 	 *
 	 * @param string $index
+	 * @param mixed $default
 	 *
-	 * @return null|string
+	 * @return mixed
 	 */
-	public function getGetVar(string $index): ?string {
-		return $this->pullGet()[$index] ?? null;
+	public function getGetVar(string $index, $default = "") {
+		return $this->pullGet()[$index] ?? $default;
 	}
 	
 	/**
@@ -91,11 +92,12 @@ class Request implements RequestInterface {
 	 * Returns a $_POST value
 	 *
 	 * @param string $index
+	 * @param mixed $default
 	 *
-	 * @return null|string
+	 * @return mixed
 	 */
-	public function getPostVar(string $index): ?string {
-		return $this->pullPost()[$index] ?? null;
+	public function getPostVar(string $index, $default = "") {
+		return $this->pullPost()[$index] ?? $default;
 	}
 	
 	/**
@@ -128,11 +130,12 @@ class Request implements RequestInterface {
 	 * Returns a $_SERVER value
 	 *
 	 * @param string $index
+	 * @param mixed $default
 	 *
-	 * @return null|string
+	 * @return mixed
 	 */
-	public function getServerVar(string $index): ?string {
-		return $this->pullServer()[$index] ?? null;
+	public function getServerVar(string $index, $default = "") {
+		return $this->pullServer()[$index] ?? $default;
 	}
 	
 	/**
@@ -161,11 +164,12 @@ class Request implements RequestInterface {
 	 * Returns a $_COOKIE value
 	 *
 	 * @param string $index
+	 * @param mixed $default
 	 *
-	 * @return null|string
+	 * @return mixed
 	 */
-	public function getCookieVar(string $index): ?string {
-		return $this->pullCookies()[$index] ?? null;
+	public function getCookieVar(string $index, $default = "") {
+		return $this->pullCookies()[$index] ?? $default;
 	}
 	
 	/**
@@ -194,11 +198,11 @@ class Request implements RequestInterface {
 	 * A get* method for our session added for completeness compared with the others.
 	 *
 	 * @param string $index
-	 * @param null   $default
+	 * @param mixed   $default
 	 *
-	 * @return mixed|null
+	 * @return mixed
 	 */
-	public function getSessionVar(string $index, $default = null) {
+	public function getSessionVar(string $index, $default = "") {
 		return $this->session->get($index, $default);
 	}
 	
