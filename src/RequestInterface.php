@@ -12,10 +12,11 @@ use Dashifen\Session\SessionInterface;
 interface RequestInterface {
 	/**
 	 * @param string $index
+	 * @param mixed  $default
 	 *
-	 * @return string|null
+	 * @return mixed
 	 */
-	public function getGetVar(string $index): ?string;
+	public function getGetVar(string $index, $default = "");
 	
 	/**
 	 * @return array
@@ -24,10 +25,11 @@ interface RequestInterface {
 	
 	/**
 	 * @param string $index
+	 * @param mixed  $default
 	 *
-	 * @return string|null
+	 * @return mixed
 	 */
-	public function getPostVar(string $index): ?string;
+	public function getPostVar(string $index, $default = "");
 	
 	/**
 	 * @return array
@@ -36,10 +38,11 @@ interface RequestInterface {
 	
 	/**
 	 * @param string $index
+	 * @param mixed  $default
 	 *
-	 * @return string|null
+	 * @return mixed
 	 */
-	public function getServerVar(string $index): ?string;
+	public function getServerVar(string $index, $default = "");
 	
 	/**
 	 * @return array
@@ -48,10 +51,11 @@ interface RequestInterface {
 	
 	/**
 	 * @param string $index
+	 * @param mixed  $default
 	 *
-	 * @return string|null
+	 * @return mixed
 	 */
-	public function getCookieVar(string $index): ?string;
+	public function getCookieVar(string $index, $default = "");
 	
 	/**
 	 * @return array
@@ -60,11 +64,11 @@ interface RequestInterface {
 	
 	/**
 	 * @param string $index
-	 * @param null   $default
+	 * @param mixed  $default
 	 *
-	 * @return mixed|null
+	 * @return mixed
 	 */
-	public function getSessionVar(string $index, $default = null);
+	public function getSessionVar(string $index, $default = "");
 	
 	/**
 	 * @return array
