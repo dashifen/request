@@ -63,7 +63,7 @@ class Request implements RequestInterface {
 	 * @return mixed
 	 */
 	public function getGetVar(string $index, $default = "") {
-		return $this->pullGet()[$index] ?? null;
+		return $this->pullGet()[$index] ?? $default;
 	}
 	
 	/**
@@ -97,7 +97,7 @@ class Request implements RequestInterface {
 	 * @return mixed
 	 */
 	public function getPostVar(string $index, $default = "") {
-		return $this->pullPost()[$index] ?? null;
+		return $this->pullPost()[$index] ?? $default;
 	}
 	
 	/**
@@ -135,7 +135,7 @@ class Request implements RequestInterface {
 	 * @return mixed
 	 */
 	public function getServerVar(string $index, $default = "") {
-		return $this->pullServer()[$index] ?? null;
+		return $this->pullServer()[$index] ?? $default;
 	}
 	
 	/**
@@ -169,7 +169,7 @@ class Request implements RequestInterface {
 	 * @return mixed
 	 */
 	public function getCookieVar(string $index, $default = "") {
-		return $this->pullCookies()[$index] ?? null;
+		return $this->pullCookies()[$index] ?? $default;
 	}
 	
 	/**
