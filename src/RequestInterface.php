@@ -79,4 +79,25 @@ interface RequestInterface {
 	 * @return SessionInterface
 	 */
 	public function getSessionObj(): SessionInterface;
+	
+	/**
+	 * @param string $index
+	 * @param string $value
+	 * @param string $default
+	 *
+	 * @return mixed
+	 */
+	public function getFilesVar(string $index, string $value, $default = "");
+	
+	/**
+	 * @param string $index
+	 *
+	 * @return array
+	 */
+	public function getFile(string $index): array;
+	
+	/**
+	 * @return array
+	 */
+	public function getFiles(): array;
 }

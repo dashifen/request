@@ -44,6 +44,11 @@ class Request implements RequestInterface {
 	protected $cookieVars;
 	
 	/**
+	 * @var array $filesVars
+	 */
+	protected $filesVars;
+	
+	/**
 	 * Request constructor.
 	 *
 	 * @param ServerRequestInterface $request
@@ -222,5 +227,45 @@ class Request implements RequestInterface {
 	 */
 	public function getSessionObj(): SessionInterface {
 		return $this->session;
+	}
+	
+	/**
+	 * @param string $index
+	 * @param string $value
+	 * @param string $default
+	 *
+	 * @return mixed
+	 */
+	public function getFilesVar(string $index, string $value, $default = "") {
+		return $this->pullFiles()[$index][$value] ?? $default;
+	}
+	
+	/**
+	 * @param string $index
+	 *
+	 * @return array
+	 */
+	public function getFile(string $index): array {
+		return $this->pullFiles()[$index] ?? [];
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getFiles(): array {
+		return $this->pullFiles();
+	}
+	
+	/**
+	 * Initializes filesVars property if necessary and returns it
+	 *
+	 * @return array
+	 */
+	protected function pullFiles() {
+		if (!is_array($this->filesVars)) {
+			$this->filesVars = $this->request->getUploadedFiles();
+		}
+		
+		return $this->filesVars;
 	}
 }
