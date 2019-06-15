@@ -16,9 +16,9 @@
 		}
 	},
 	"require": {
-		"php": "^7.1",
-		"zendframework/zend-diactoros": "^1.4",
-		"dashifen/session": "^1.0"
+		"php": "7.3.*",
+		"zendframework/zend-diactoros": "2.1.*",
+		"dashifen/session": "1.2.* "
 	},
 	"license": "MIT"
 }
