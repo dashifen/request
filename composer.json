@@ -16,7 +16,7 @@
 		}
 	},
 	"require": {
-		"php": "7.3.*",
+		"php": ">=7.3.*",
 		"zendframework/zend-diactoros": "2.1.*",
 		"dashifen/session": "1.2.* "
 	},

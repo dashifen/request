@@ -5,7 +5,6 @@ namespace Dashifen\Request;
 use Dashifen\Session\SessionInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-
 /**
  * Class Request
  *
