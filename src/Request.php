@@ -12,41 +12,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Request implements RequestInterface
 {
-  
-  /**
-   * @var ServerRequestInterface $request ;
-   */
-  protected $request;
-  
-  /**
-   * @var SessionInterface $session
-   */
-  protected $session;
-  
-  /**
-   * @var array $getVars
-   */
-  protected $getVars;
-  
-  /**
-   * @var array $postVars
-   */
-  protected $postVars;
-  
-  /**
-   * @var array serverVars
-   */
-  protected $serverVars;
-  
-  /**
-   * @var array $cookieVars
-   */
-  protected $cookieVars;
-  
-  /**
-   * @var array $filesVars
-   */
-  protected $filesVars;
+  protected array $get;
+  protected array $post;
+  protected array $server;
+  protected array $cookie;
+  protected array $files;
   
   /**
    * Request constructor.
@@ -54,47 +24,57 @@ class Request implements RequestInterface
    * @param ServerRequestInterface $request
    * @param SessionInterface       $session
    */
-  public function __construct(ServerRequestInterface $request, SessionInterface $session)
-  {
-    $this->request = $request;
-    $this->session = $session;
+  public function __construct(
+    protected ServerRequestInterface $request,
+    protected SessionInterface $session
+  ) {
   }
   
   /**
-   * Returns a $_GET value
+   * Returns the value of a $_GET index.
    *
    * @param string $index
    * @param mixed  $default
    *
    * @return mixed
    */
-  public function getGetVar(string $index, $default = "")
+  public function getGetVar(string $index, mixed $default = ''): mixed
   {
-    return $this->pullGet()[$index] ?? $default;
+    return $this->getGet()[$index] ?? $default;
   }
   
   /**
-   * Returns $_GET
+   * Returns the value of a $_GET index.
    *
    * @return array
    */
   public function getGet(): array
   {
-    return $this->pullGet();
+    return $this->pull('get');
   }
   
   /**
    * Initializes the getVars property when necessary and returns it
    *
+   * @param string $target 
+   * 
    * @return array
    */
-  protected function pullGet(): array
+  private function pull(string $target): array
   {
-    if (!is_array($this->getVars)) {
-      $this->getVars = $this->request->getQueryParams();
+    if (!isset($this->{$target})) {
+      $method = match ($target) {
+        'get'    => 'getQueryParams',
+        'post'   => 'getParsedBody',
+        'server' => 'getServerParams',
+        'cookie' => 'getCookieParams',
+        'files'  => 'getUploadedFiles',
+      };
+      
+      $this->{$target} = $this->request->{$method}();
     }
     
-    return $this->getVars;
+    return $this->{$target};
   }
   
   /**
@@ -105,9 +85,9 @@ class Request implements RequestInterface
    *
    * @return mixed
    */
-  public function getPostVar(string $index, $default = "")
+  public function getPostVar(string $index, mixed $default = ''): mixed
   {
-    return $this->pullPost()[$index] ?? $default;
+    return $this->getPost()[$index] ?? $default;
   }
   
   /**
@@ -117,25 +97,7 @@ class Request implements RequestInterface
    */
   public function getPost(): array
   {
-    return $this->pullPost();
-  }
-  
-  /**
-   * Initializes postVars property if necessary and returns it
-   *
-   * @return array
-   */
-  protected function pullPost()
-  {
-    if (!is_array($this->postVars)) {
-      $this->postVars = $this->request->getParsedBody();
-      
-      if (!is_array($this->postVars)) {
-        $this->postVars = [];
-      }
-    }
-    
-    return $this->postVars;
+    return $this->pull('post');
   }
   
   /**
@@ -146,9 +108,9 @@ class Request implements RequestInterface
    *
    * @return mixed
    */
-  public function getServerVar(string $index, $default = "")
+  public function getServerVar(string $index, mixed $default = ''): mixed
   {
-    return $this->pullServer()[$index] ?? $default;
+    return $this->getServer()[$index] ?? $default;
   }
   
   /**
@@ -158,21 +120,7 @@ class Request implements RequestInterface
    */
   public function getServer(): array
   {
-    return $this->pullServer();
-  }
-  
-  /**
-   * Initializes serverVars property if necessary and returns it
-   *
-   * @return array
-   */
-  protected function pullServer()
-  {
-    if (!is_array($this->serverVars)) {
-      $this->serverVars = $this->request->getServerParams();
-    }
-    
-    return $this->serverVars;
+    return $this->pull('server');
   }
   
   /**
@@ -183,9 +131,9 @@ class Request implements RequestInterface
    *
    * @return mixed
    */
-  public function getCookieVar(string $index, $default = "")
+  public function getCookieVar(string $index, mixed $default = ''): mixed
   {
-    return $this->pullCookies()[$index] ?? $default;
+    return $this->getCookies()[$index] ?? $default;
   }
   
   /**
@@ -195,21 +143,7 @@ class Request implements RequestInterface
    */
   public function getCookies(): array
   {
-    return $this->pullCookies();
-  }
-  
-  /**
-   * Initializes cookieVars property if necessary and returns it
-   *
-   * @return array
-   */
-  protected function pullCookies()
-  {
-    if (!is_array($this->cookieVars)) {
-      $this->cookieVars = $this->request->getCookieParams();
-    }
-    
-    return $this->cookieVars;
+    return $this->pull('cookie');
   }
   
   /**
@@ -220,7 +154,7 @@ class Request implements RequestInterface
    *
    * @return mixed
    */
-  public function getSessionVar(string $index, $default = "")
+  public function getSessionVar(string $index, mixed $default = ''): mixed
   {
     return $this->session->get($index, $default);
   }
@@ -246,46 +180,38 @@ class Request implements RequestInterface
   }
   
   /**
+   * Returns the value of a $_FILES index.
+   * 
    * @param string $index
    * @param string $value
    * @param string $default
    *
    * @return mixed
    */
-  public function getFilesVar(string $index, string $value, $default = "")
+  public function getFilesVar(string $index, string $value, mixed $default = ''): mixed
   {
-    return $this->pullFiles()[$index][$value] ?? $default;
+    return $this->getFiles()[$index][$value] ?? $default;
   }
   
   /**
+   * Returns complete information about an index within $_FILES.
+   *
    * @param string $index
    *
    * @return array
    */
   public function getFile(string $index): array
   {
-    return $this->pullFiles()[$index] ?? [];
+    return $this->pull('files')[$index] ?? [];
   }
   
   /**
+   * Returns the information in $_FILES.
+   *
    * @return array
    */
   public function getFiles(): array
   {
-    return $this->pullFiles();
-  }
-  
-  /**
-   * Initializes filesVars property if necessary and returns it
-   *
-   * @return array
-   */
-  protected function pullFiles()
-  {
-    if (!is_array($this->filesVars)) {
-      $this->filesVars = $this->request->getUploadedFiles();
-    }
-    
-    return $this->filesVars;
+    return $this->pull('files');
   }
 }
