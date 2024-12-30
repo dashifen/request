@@ -16,9 +16,9 @@
 		}
 	},
 	"require": {
-		"php": ">=7.3",
-		"zendframework/zend-diactoros": "^2",
-		"dashifen/session": "^1"
+		"php": ">=8.4",
+		"dashifen/session": "^2.0",
+		"laminas/laminas-diactoros": "^3.5"
 	},
 	"license": "MIT"
 }
