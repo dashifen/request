@@ -2,6 +2,8 @@
 
 namespace Dashifen\Request;
 
+use Dashifen\Session\Session;
+use Laminas\Diactoros\ServerRequest;
 use Dashifen\Session\SessionInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,13 +23,20 @@ class Request implements RequestInterface
   /**
    * Request constructor.
    *
-   * @param ServerRequestInterface $request
-   * @param SessionInterface       $session
+   * @param ServerRequestInterface|null $request
+   * @param SessionInterface|null       $session
    */
   public function __construct(
-    protected ServerRequestInterface $request,
-    protected SessionInterface $session
+    protected ?ServerRequestInterface $request = null,
+    protected ?SessionInterface $session = null
   ) {
+    // if a dev wants either or both of our parameters here, they can.  but,
+    // if they're happy with the defaults, we can instantiate them here using
+    // the null coalescing assignment operator to be sure we don't overwrite
+    // anything they did actually send us.
+    
+    $this->request ??= new ServerRequest();
+    $this->session ??= new Session();
   }
   
   /**
