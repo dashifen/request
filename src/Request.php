@@ -3,8 +3,8 @@
 namespace Dashifen\Request;
 
 use Dashifen\Session\Session;
-use Laminas\Diactoros\ServerRequest;
 use Dashifen\Session\SessionInterface;
+use Laminas\Diactoros\ServerRequestFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -35,8 +35,9 @@ class Request implements RequestInterface
     // the null coalescing assignment operator to be sure we don't overwrite
     // anything they did actually send us.
     
-    $this->request ??= new ServerRequest();
     $this->session ??= new Session();
+    $this->request ??= ServerRequestFactory::fromGlobals($_SERVER, $_GET,
+      $_POST, $_COOKIE, $_FILES);
   }
   
   /**
